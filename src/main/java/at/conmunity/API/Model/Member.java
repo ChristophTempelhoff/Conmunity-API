@@ -1,6 +1,8 @@
 package at.conmunity.API.Model;
 
 import at.conmunity.API.Enums.EGender;
+import at.conmunity.API.Enums.EMemberType;
+import at.conmunity.API.Service.CryptographyService;
 import at.conmunity.API.Service.ObjectJSONService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
@@ -10,12 +12,11 @@ import jakarta.persistence.Id;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 public class Member {
     @JsonProperty("memberID")
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) long MemberID;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long MemberID;
     @JsonProperty("lastname")
     private String Lastname;
     @JsonProperty("preferredFirstname")
@@ -30,38 +31,48 @@ public class Member {
     private String LastnameGuardian = null;
     @JsonProperty("firstnameGuardian")
     private String FirstnameGuardian = null;
-    @JsonProperty("contactID")
-    private long ContactID;
+    @JsonProperty("street")
+    private String Street;
+    @JsonProperty("postalCode")
+    private String PostalCode;
+    @JsonProperty("city")
+    private String City;
+    @JsonProperty("telephone")
+    private String Telephone;
+    @JsonProperty("email")
+    private String email;
+    @JsonProperty("student")
+    private boolean Student;
+    @JsonProperty("wantsNewsletter")
+    private boolean WantsNewsletter;
+    @JsonProperty("memberType")
+    private EMemberType MemberType;
     @JsonProperty("password")
     private String Password;
 
-    protected Member(){
-        this.MemberID = 0;
-        this.Lastname = "Ipsum";
-        this.PreferredFirstname = "Lora";
-        this.ActualFirstname = "Lorem";
-        this.Birthday = new Date();
-        this.Gender = EGender.FEMALE;
-        this.LastnameGuardian = "Ipsum";
-        this.FirstnameGuardian = "Torem";
-        this.ContactID = 0;
-        this.Password = "Test";
-    }
+    protected Member(){}
 
-    public Member(String lastname, String preferredFirstname, String actualFirstname, Date birthday, EGender gender, String lastnameGuardian, String firstnameGuardian, long contactID, String password){
-        this(lastname, preferredFirstname, actualFirstname, birthday, gender, contactID, password);
+    public Member(String lastname, String preferredFirstname, String actualFirstname, Date birthday, EGender gender, String lastnameGuardian, String firstnameGuardian, String street, String postalCode, String city, String telephone, String email, boolean isStudent, boolean wantsNewsletter, EMemberType memberType, String password){
+        this(lastname, preferredFirstname, actualFirstname, birthday, gender, street, postalCode, city, telephone, email, isStudent, wantsNewsletter, memberType, password);
         this.LastnameGuardian = lastnameGuardian;
         this.FirstnameGuardian = firstnameGuardian;
     }
 
-    public Member(String lastname, String preferredFirstname, String actualFirstname, Date birthday, EGender gender, long contactID, String password){
+    public Member(String lastname, String preferredFirstname, String actualFirstname, Date birthday, EGender gender, String street, String postalCode, String city, String telephone, String email, boolean isStudent, boolean wantsNewsletter, EMemberType memberType, String password){
         this.Lastname = lastname;
         this.PreferredFirstname = preferredFirstname;
         this.ActualFirstname = actualFirstname;
         this.Birthday = birthday;
         this.Gender = gender;
-        this.ContactID = contactID;
-        this.Password = password;
+        this.Street = street;
+        this.PostalCode = postalCode;
+        this.City = city;
+        this.Telephone = telephone;
+        this.email = email;
+        this.Student = isStudent;
+        this.WantsNewsletter = wantsNewsletter;
+        this.MemberType = memberType;
+        this.Password = CryptographyService.CreateHash(password);
     }
 
     public Long getMemberID() {
@@ -96,13 +107,42 @@ public class Member {
         return FirstnameGuardian;
     }
 
-    public long getContactID() {
-        return ContactID;
+    public String getStreet() {
+        return Street;
+    }
+
+    public String getPostalCode() {
+        return PostalCode;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public String getTelephone() {
+        return Telephone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isStudent() {
+        return Student;
+    }
+
+    public boolean isWantsNewsletter() {
+        return WantsNewsletter;
+    }
+
+    public EMemberType getMemberType() {
+        return MemberType;
     }
 
     public String getPassword() {
         return Password;
     }
+
 
     public void setLastname(String lastname) {
         Lastname = lastname;
@@ -132,12 +172,40 @@ public class Member {
         FirstnameGuardian = firstnameGuardian;
     }
 
-    public void setContactID(long contactID) {
-        ContactID = contactID;
+    public void setStreet(String street) {
+        Street = street;
+    }
+
+    public void setPostalCode(String postalCode) {
+        PostalCode = postalCode;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public void setTelephone(String telephone) {
+        Telephone = telephone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setStudent(boolean student) {
+        Student = student;
+    }
+
+    public void setWantsNewsletter(boolean wantsNewsletter) {
+        WantsNewsletter = wantsNewsletter;
+    }
+
+    public void setMemberType(EMemberType memberType) {
+        MemberType = memberType;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        Password = CryptographyService.CreateHash(password);
     }
 
     @Override
@@ -156,7 +224,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "User: [UserUUID=" + this.MemberID +", Lastname=" + this.Lastname + ", Actual Firstname=" + this.ActualFirstname + ", preferred Firstname=" + this.PreferredFirstname + ", ContactUUID=" + this.ContactID + "]";
+        return "User: [UserUUID=" + this.MemberID +", Lastname=" + this.Lastname + ", Actual Firstname=" + this.ActualFirstname + ", preferred Firstname=" + this.PreferredFirstname + ", ContactUUID=" + this.Street + "]";
     }
 
     public String toJSON() {
@@ -172,7 +240,14 @@ public class Member {
         this.setGender(other.getGender());
         this.setLastnameGuardian(other.getLastnameGuardian());
         this.setFirstnameGuardian(other.getFirstnameGuardian());
-        this.setContactID(other.getContactID());
+        this.setStreet(other.getStreet());
+        this.setPostalCode(other.getPostalCode());
+        this.setCity(other.getCity());
+        this.setTelephone(other.getTelephone());
+        this.setEmail(other.getEmail());
+        this.setMemberType(other.getMemberType());
+        this.setStudent(other.isStudent());
+        this.setWantsNewsletter(other.isWantsNewsletter());
         this.setPassword(other.getPassword());
 
         return this;
