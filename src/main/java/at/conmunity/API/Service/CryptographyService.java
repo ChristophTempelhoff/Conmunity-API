@@ -1,7 +1,5 @@
 package at.conmunity.API.Service;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -15,7 +13,6 @@ public class CryptographyService {
     private static final int HASH_BYTE_SIZE = 1024;
     private static final int PBKDF2_ITERATIONS = 1000;
 
-    @org.jetbrains.annotations.NotNull
     public static String CreateHash(String password){
         byte[] salt = new byte[SALT_BYTE_SIZE];
 
@@ -26,7 +23,7 @@ public class CryptographyService {
                 Base64.getEncoder().encodeToString(hash);
     }
 
-    private static byte[] PBKDF2(@NotNull String password, byte[] salt){
+    private static byte[] PBKDF2(String password, byte[] salt){
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
