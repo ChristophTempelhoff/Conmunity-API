@@ -1,12 +1,12 @@
 package at.conmunity.API.Interface;
 
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
-import java.util.UUID;
 
 public interface IController<T> {
-    T create(T obj);
-    List<T> getAll();
-    T getByID(Long id);
-    T update(T obj);
-    void delete(Long id);
+    ResponseEntity<T> create(T obj);
+    ResponseEntity<List<T>> get(Long ID);
+    ResponseEntity<T> update(T obj);
+    ResponseEntity<T> delete(Long id);
 }
