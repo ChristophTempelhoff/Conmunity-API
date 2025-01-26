@@ -77,6 +77,7 @@ public class MemberController implements IController<Member> {
         if(repository.existsById(ID)){
 
             Member member = repository.findById(ID).orElse(null);
+            assert member != null;
             repository.deleteById(member.getMemberID());
 
             return new ResponseEntity<>(member, HttpStatus.OK);

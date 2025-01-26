@@ -3,7 +3,6 @@ package at.conmunity.API.Interface;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IController<T> {
     ResponseEntity<T> create(T obj);

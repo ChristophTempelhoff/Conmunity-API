@@ -224,7 +224,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "User: [UserUUID=" + this.MemberID +", Lastname=" + this.Lastname + ", Actual Firstname=" + this.ActualFirstname + ", preferred Firstname=" + this.PreferredFirstname + ", ContactUUID=" + this.Street + "]";
+        return "User: [UserID=" + this.MemberID +", Lastname=" + this.Lastname + ", Actual Firstname=" + this.ActualFirstname + ", preferred Firstname=" + this.PreferredFirstname + ", Email=" + this.email + "]";
     }
 
     public String toJSON() {
